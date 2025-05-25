@@ -1,55 +1,54 @@
-import React, { useEffect, useState } from 'react';
+/*
+Testler:
+
+
+Login componentinde usehistory kullanılmış
+Login componentinde form verileri için useState kullanılmış ve başlangıç değeri tanımlanmış
+Login componentinde handleChange fonksiyonu tanımlanmış
+Login componentinde handleSubmit fonksiyonu tanımlanmış
+handleSubmitde preventDefault() tanımlanmış
+handleSubmitde axios get isteği yapılmış
+Login form test kullanıcısı bilgileri ile doldurulunca doğru sayfaya yönleniyor
+Login form yanlış email, doğru password ile doldurulunca error sayfasına yönleniyor
+Login form doğru email, yanlış password ile doldurulunca error sayfasına yönleniyor
+
+
+*/
+
 import { Form, FormGroup, Label, Input, Button } from 'reactstrap';
 import { useHistory } from 'react-router-dom';
-
+import { useState } from 'react';
 import axios from 'axios';
 
-const initialForm = {
-  email: '',
-  password: '',
-  terms: false,
-};
-
 export default function Login() {
-  const [form, setForm] = useState(initialForm);
+  /* 
+ ReadMe'deki görev listesini burada yapabilirsin.
+ */
 
   const history = useHistory();
+  const [formData, setFormData] = useState({});
 
-  const handleChange = (event) => {
-    let { name, value, type, checked } = event.target;
-    value = type == 'checkbox' ? checked : value;
-    setForm({ ...form, [name]: value });
-  };
+  const handleChange = event => {
+    setFormData(event.target.value);
+  }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
-
-    axios
-      .get('https://6540a96145bedb25bfc247b4.mockapi.io/api/login')
-      .then((res) => {
-        const user = res.data.find(
-          (item) => item.password == form.password && item.email == form.email
-        );
-        if (user) {
-          setForm(initialForm);
-          history.push('/main');
-        } else {
-          history.push('/error');
-        }
-      });
-  };
+    axios.get(history)
+      .then(event => setFormData(event.target.value))
+      .catch(error => console.log(error))
+  }
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form>
       <FormGroup>
         <Label for="exampleEmail">Email</Label>
         <Input
           id="exampleEmail"
           name="email"
           placeholder="Enter your email"
-          type="email"
           onChange={handleChange}
-          value={form.email}
+          type="email"
         />
       </FormGroup>
       <FormGroup>
@@ -58,29 +57,11 @@ export default function Login() {
           id="examplePassword"
           name="password"
           placeholder="Enter your password "
-          type="password"
           onChange={handleChange}
-          value={form.password}
+          type="password"
         />
       </FormGroup>
-      {/* reactstrap checkbox ekleyelim*/}
-      <FormGroup check>
-        <Input
-          type="checkbox"
-          name="terms"
-          id="terms"
-          checked={form.terms}
-          onChange={handleChange}
-        />{' '}
-        <Label htmlFor="terms" check>
-          I agree to terms of service and privacy policy{' '}
-        </Label>
-      </FormGroup>
-      <FormGroup className="text-center p-4">
-        <Button color="primary" disabled={!form.terms}>
-          Sign In
-        </Button>
-      </FormGroup>
+      <Button color="primary" onSubmit={handleSubmit}>Sign In</Button>
     </Form>
   );
 }
