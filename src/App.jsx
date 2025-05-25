@@ -8,7 +8,9 @@ import SideBar from './components/SideBar';
 import Login from './components/Login';
 
 import './App.css';
+
 import './components/Layout.css';
+
 import ErrorPage from './components/ErrorPage';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
