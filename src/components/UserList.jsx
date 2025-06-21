@@ -3,9 +3,9 @@ export default function UserList(props) {
 
   return kullanicilar.map((kullanici, index) => {
     return (
-      <div key={index} className="user-item">
+      <div key={index}>
         {kullanici.adSoyad}
       </div>
-    );
+    )
   });
 }

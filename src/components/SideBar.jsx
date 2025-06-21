@@ -1,20 +1,12 @@
-import { useState } from 'react';
-import CategoryList from './CategoryList';
+import { useState } from "react";
+import UserList from "./UserList";
 
-export default function SideBar() {
-  const [categories, setCategories] = useState([
-    "electronics",
-    "jewelery",
-    "men's clothing",
-    "women's clothing"
-    ]);
-
+export default function SideBar(props) {
+  const { kullanicilar } = props;
   return (
-    <>
-      <div className="side-container">
-        <h2>Categories</h2>
-        <CategoryList categories={categories} />
-      </div>
-    </>
+    <div className="side-container">
+      <h2>Users</h2>
+      <UserList kullanicilar={kullanicilar} />
+    </div>
   );
 }
